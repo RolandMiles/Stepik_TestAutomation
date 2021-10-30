@@ -11,7 +11,8 @@ class ProductPage(BasePage):
         self.should_be_promo_url()
         self.should_be_add_to_basket_button()
         self.should_add_product_to_basket()
-        self.should_be_order_confirmation()
+        self.should_be_product_confirmation()
+        self.should_be_price_confirmation()
 
     def should_be_promo_url(self):
         assert "newYear" in self.browser.current_url, "There is no promo"
@@ -23,11 +24,20 @@ class ProductPage(BasePage):
         add_button = self.browser.find_element(*ProductPageLocators.ADD_TO_BASKET_BUTTON)
         add_button.click()
         self.solve_quiz_and_get_code()
-        time.sleep(4)
+        # time.sleep(300)
 
-    def should_be_order_confirmation(self):
-        element = WebDriverWait(self.browser, 10).until(ec.presence_of_element_located(
-            ProductPageLocators.ORDER_CONFIRM))     # Распаковка кортежа происходит внутри самой функции (* - не нужно)
-        assert element, "Order confirmation is not presented"
+    def should_be_product_confirmation(self):
+        title = self.browser.find_element(*ProductPageLocators.PRODUCT_TITLE)
 
+        message = WebDriverWait(self.browser, 10).until(ec.presence_of_element_located(
+            ProductPageLocators.PRODUCT_CONFIRM_MESSAGE))   # Распаковка кортежа происходит внутри метода (* - не нужна)
 
+        assert message.text == title.text, f"Product confirmation is not correct. Should be: {title.text}"
+
+    def should_be_price_confirmation(self):
+        price = self.browser.find_element(*ProductPageLocators.PRODUCT_PRICE)
+
+        message = WebDriverWait(self.browser, 10).until(ec.presence_of_element_located(
+            ProductPageLocators.PRICE_CONFIRM_MESSAGE))   # Распаковка кортежа происходит внутри метода (* - не нужна)
+
+        assert message.text == price.text, f"Price confirmation is not correct. Should be: {price.text}"
