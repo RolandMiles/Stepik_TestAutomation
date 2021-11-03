@@ -31,7 +31,7 @@ class ProductPage(BasePage):
         title = self.browser.find_element(*ProductPageLocators.PRODUCT_TITLE)
 
         message = WebDriverWait(self.browser, 10).until(ec.presence_of_element_located(
-            ProductPageLocators.PRODUCT_CONFIRM_MESSAGE))   # Unpacking tuple inside function^ do not use *
+            ProductPageLocators.PRODUCT_CONFIRM_MESSAGE))   # Unpacking tuple inside function: do not use *
 
         assert message.text == title.text, f"Product confirmation is not correct. Should be: {title.text}"
 
@@ -39,7 +39,7 @@ class ProductPage(BasePage):
         price = self.browser.find_element(*ProductPageLocators.PRODUCT_PRICE)
 
         message = WebDriverWait(self.browser, 10).until(ec.presence_of_element_located(
-            ProductPageLocators.PRICE_CONFIRM_MESSAGE))     # Unpacking tuple inside function^ do not use *
+            ProductPageLocators.PRICE_CONFIRM_MESSAGE))     # Unpacking tuple inside function: do not use *
 
         assert message.text == price.text, f"Price confirmation is not correct. Should be: {price.text}"
 

@@ -9,15 +9,11 @@ import math
 
 class BasePage():
 
-    # Передача объектов браузера и URL, а также времени неявного ожидания
-    # Transfer browser, url and implicitly waiting timeout
     def __init__(self, browser, url, timeout=10):
         self.browser = browser
         self.url = url
         self.browser.implicitly_wait(timeout)
 
-    # Проверка на исчезновение элемента в течение заданного времени
-    # Check for element disappear in waiting time
     def is_disappeared(self, how, what, timeout=4):
         try:
             WebDriverWait(self.browser, timeout, 1, TimeoutException). \
@@ -27,8 +23,6 @@ class BasePage():
 
         return True
 
-    # Проверка существования элемента на странице / Обработка исключения
-    # Check is element presented on page
     def is_element_present(self, how, what):
         try:
             self.browser.find_element(how, what)
@@ -36,8 +30,6 @@ class BasePage():
             return False
         return True
 
-    # Проверка на не появление элемента в течение заданного времени
-    # Check for element not presented in waiting time
     def is_not_element_present(self, how, what, timeout=4):
         try:
             WebDriverWait(self.browser, timeout).\
@@ -47,36 +39,24 @@ class BasePage():
 
         return False
 
-    # Переход на страницу логина
-    # Go to login page
     def go_to_login_page(self):
         link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
         link.click()
 
-    # Переход на страницу корзины
-    # Go to basket page
     def go_to_basket_page(self):
         link = self.browser.find_element(*BasePageLocators.BASKET_LINK)
         link.click()
 
-    # Открыть страницу по ссылке в браузере
-    # Open page
     def open(self):
         self.browser.get(self.url)
 
-    # Проверка авторизации пользователя
-    # Check is user authorized
     def should_be_authorized_user(self):
         assert self.is_element_present(*BasePageLocators.USER_ICON), "User icon is not presented," \
                                                                      " probably unauthorised user"
 
-    # Проверка наличия ссылки на логин
-    # Check is login link presented
     def should_be_login_link(self):
         assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not presented"
 
-    # Решение квиза для получения проверочного кода
-    # Solve quiz for checkung code
     def solve_quiz_and_get_code(self):
         alert = self.browser.switch_to.alert
         x = alert.text.split(" ")[2]
